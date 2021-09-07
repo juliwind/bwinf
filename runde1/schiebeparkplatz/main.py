@@ -1,3 +1,4 @@
+info = []
 with open("file.txt", 'r') as file:
     for line in file:
         for word in line.split():
@@ -11,38 +12,79 @@ while (i < len(info)):
     i += 2
 
 
-def main(x):
+def main(x, final):
     if place[x] == 0:
         return True
-    if (place[x - 1] == place[x]):
+    if (place[x-1] == place[x]):
         # LEFT
-        moveLeft(x, 1)
-        moveRight(x, 2)
-    elif (place[x + 1] == place[x]):
+        moveUpLeft(x)
+        moveRight(x, final)
+    elif (place[x+1] == place[x]):
         # RIGHT
-        moveLeft(x, 2)
-        moveRight(x, 1)
+        moveLeft(x, final)
+        moveUpRight(x)
+
+def moveUpLeft(point):
+    if point-2 > len(place):
+        if place[point-2] == 0:
+            place[point-2] = place[point]
+            place[point] = 0
+            return True
+        else:
+            if (moveUpLeft(point-2)) == False:
+                return False
+            else: moveUpLeft(point)
+
+def moveUpRight(point):
+    if point+2 < len(place):
+        if place[point+2] == 0:
+            place[point+2] = place[point]
+            place[point] = 0
+            return True
+        else:
+            if (moveUpRight(point+2)) == False:
+                return False
+            else: moveUpRight(point)
+
+def moveLeft(point, final):
+    if point - 2 > len(place):
+        if place[point-2] == 0:
+            place[point-2] = place[point]
+            place[point-1] = place[point]
+            place[point+1] = 0
+            place[point] = 0
+            return True
+        elif final == False:
+            if place[point - 1] == 0:
+                return moveUpLeft(point)
+        else:
+            if moveLeft(point-2, False) == False:
+                return False
+            else: moveLeft(point-2, False)
 
 
-def moveLeft(point, step_number):
-    car_name = place[point]
-    place[point] = 0
-    if step_number == 1:
-        place[point - 2] = car_name
-    else:
-        place[point + 1] = 0
-        place[point - 1] = car_name
-        place[point - 2] = car_name
-
-
-def moveRight(point, step_number):
-    print()
-
+def moveRight(point, final):
+    if point + 2 < len(place):
+        if place[point+2] == 0:
+            place[point+2] = place[point]
+            place[point+1] = place[point]
+            place[point-1] = 0
+            place[point] = 0
+            return True
+        elif final == False:
+            if place[point+1] == 0:
+                return moveUpRight(point)
+        else:
+            if moveRight(point+2, False) == False:
+                return False
+            else: moveRight(point+2, False)
 
 i = 0
 for x in place:
-    main(i)
-    print(i, "i")
+    curr_place = main(i, True)
+    #print(curr_place)
+    if curr_place:
+        print(i)
     i += 1
 
 
