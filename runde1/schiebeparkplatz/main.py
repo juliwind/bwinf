@@ -10,6 +10,7 @@ while (i < len(info)):
     place[int(info[i + 1])] = info[i]
     place[int(info[i + 1]) + 1] = info[i]
     i += 2
+default_place = place.copy()
 
 
 def main(x, final):
@@ -18,14 +19,16 @@ def main(x, final):
     if (place[x-1] == place[x]):
         # LEFT
         moveUpLeft(x)
+        place = default_place.copy()
         moveRight(x, final)
     elif (place[x+1] == place[x]):
         # RIGHT
         moveLeft(x, final)
         moveUpRight(x)
 
+
 def moveUpLeft(point):
-    if point-2 > len(place):
+    if point-2 >= len(place):
         if place[point-2] == 0:
             place[point-2] = place[point]
             place[point] = 0
@@ -33,10 +36,12 @@ def moveUpLeft(point):
         else:
             if (moveUpLeft(point-2)) == False:
                 return False
-            else: moveUpLeft(point)
+            else:
+                moveUpLeft(point)
+
 
 def moveUpRight(point):
-    if point+2 < len(place):
+    if point+2 <= len(place):
         if place[point+2] == 0:
             place[point+2] = place[point]
             place[point] = 0
@@ -44,10 +49,12 @@ def moveUpRight(point):
         else:
             if (moveUpRight(point+2)) == False:
                 return False
-            else: moveUpRight(point)
+            else:
+                moveUpRight(point)
+
 
 def moveLeft(point, final):
-    if point - 2 > len(place):
+    if point - 2 >= len(place):
         if place[point-2] == 0:
             place[point-2] = place[point]
             place[point-1] = place[point]
@@ -60,11 +67,12 @@ def moveLeft(point, final):
         else:
             if moveLeft(point-2, False) == False:
                 return False
-            else: moveLeft(point-2, False)
+            else:
+                moveLeft(point-2, False)
 
 
 def moveRight(point, final):
-    if point + 2 < len(place):
+    if point + 2 <= len(place):
         if place[point+2] == 0:
             place[point+2] = place[point]
             place[point+1] = place[point]
@@ -77,12 +85,14 @@ def moveRight(point, final):
         else:
             if moveRight(point+2, False) == False:
                 return False
-            else: moveRight(point+2, False)
+            else:
+                moveRight(point+2, False)
+
 
 i = 0
 for x in place:
     curr_place = main(i, True)
-    #print(curr_place)
+    # print(curr_place)
     if curr_place:
         print(i)
     i += 1
