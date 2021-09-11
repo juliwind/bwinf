@@ -11,9 +11,7 @@ def readFile(p):
         p[int(info[i + 1])] = info[i]
         p[int(info[i + 1]) + 1] = info[i]
         i += 2
-    return (p)
-
-###########################################################
+    return (p, info[0])
 
 
 def makeSpace(p, i):
@@ -26,6 +24,8 @@ def makeSpace(p, i):
     ret_right = False
     path_left = []
     path_right = []
+    final_path = []
+
     if (carLeftSide(p, i)):
         if (moveRight1(p, i, path_right)):
             ret = True
@@ -41,7 +41,7 @@ def makeSpace(p, i):
             else:
                 final_path = path_right
         return ret, final_path
-###
+
     if (carRightSide(p, i)):
         if (moveLeft1(p, i, path_left)):
             ret = True
@@ -57,8 +57,6 @@ def makeSpace(p, i):
             else:
                 final_path = path_right
         return ret, final_path
-
-#####################################################################
 
 
 def moveLeft2(p, i, path):  # i zeigt auf linken Teil vom Auto
@@ -146,13 +144,14 @@ def carRightSide(p, i):
 
 
 parking_place = []
-parking_place = readFile(parking_place)
-print(parking_place)
+parking_place = readFile(parking_place)[0]
+first_letter = ord(readFile(parking_place)[1])
 
 for i in range(len(parking_place)):
-    print("Freimachen: %d" % i)
     solution = makeSpace(parking_place, i)
     if (solution[0]):
-        print(solution[1])
+        # print(solution[1])
+        #print("%s:" % solution[1])
+        print("%c: %s" % (chr(first_letter + i), ', '.join(solution[1])))
     else:
-        print("nicht moeglich!")
+        print("%c: nicht moeglich!" % chr(first_letter + i))
