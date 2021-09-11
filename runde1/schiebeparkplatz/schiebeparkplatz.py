@@ -13,88 +13,123 @@ def readFile(p):
         i += 2
     return (p)
 
+###########################################################
+
 
 def makeSpace(p, i):
-    if i > (len(p) - 1):
-        return False
+    if i > (len(p) - 1) or i < 0:
+        return False, []
     if p[i] == 0:
-        return True
-    if (moveRight1(p, i)):
-        return True
+        return True, []
+    ret = False
+    ret_left = False
+    ret_right = False
+    path_left = []
+    path_right = []
     if (carLeftSide(p, i)):
-        if (moveLeft2(p, i)):
-            return True
-        return False
-
+        print("carLeft")
+        if (moveRight1(p, i, path_right)):
+            print("Right1 = True")
+            ret = True
+            ret_right = True
+            final_path = path_right
+        if (moveLeft2(p, i, path_left)):
+            print("Left2 = True")
+            ret = True
+            ret_left = True
+            final_path = path_left
+        print("right: ", path_right, "left: ", path_left)
+        if (ret_right and ret_left):
+            if (len(path_left) < len(path_right)):
+                final_path = path_left
+            else:
+                final_path = path_right
+        return ret, final_path
+###
     if (carRightSide(p, i)):
-        if (moveLeft1(p, i)):
-            return True
-        if (moveRight2(p, i)):
-            return True
-    return False
+        print("carRight")
+        if (moveLeft1(p, i, path_left)):
+            print("Left1 = True")
+            ret = True
+            ret_left = True
+            final_path = path_left
+        if (moveRight2(p, i, path_right)):
+            print("Right2 = True")
+            ret = True
+            ret_right = True
+            final_path = path_right
+        print("right: ", path_right, "left: ", path_left)
+        if (ret_right and ret_left):
+            if (len(path_left) < len(path_right)):
+                final_path = path_left
+            else:
+                final_path = path_right
+        return ret, final_path
+
+#####################################################################
 
 
-def moveLeft2(p, i):  # i zeigt auf linken Teil vom Auto
+def moveLeft2(p, i, path):  # i zeigt auf linken Teil vom Auto
     pp = p.copy()
     if i < 2:
         return False
     if p[i - 2] == 0 and p[i - 1] == 0:
         path.append(p[i] + " 2 links")
-        return True
+        return True, path
     if p[i-1] == 0 and p[i-2] != 0:
-        if moveLeft1(pp, i-2):
+        if moveLeft1(pp, i-2, path):
             path.append(p[i] + " 2 links")
-            return True
+            return True, path
     if p[i-1] != 0 and p[i-2] != 0:
-        if moveLeft2(pp, i-2):
+        if moveLeft2(pp, i-2, path):
             path.append(p[i] + " 2 links")
-            return True
+            return True, path
     return False
 
 
-def moveLeft1(p, i):   # i zeigt auf den rechten Teil vom Auto
+def moveLeft1(p, i, path):   # i zeigt auf den rechten Teil vom Auto
     pp = p.copy()
     if i < 1:
         return False
     if p[i-2] == 0:
         path.append(p[i] + " 1 links")
-        return True
+        return True, path
     else:
-        if moveLeft1(pp, i-2):
+        if moveLeft1(pp, i-2, path):
             path.append(p[i] + " 1 links")
-            return True
+            return True, path
     return False
 
 
-def moveRight2(p, i):     # i zeigt auf rechten Teil von Auto
+def moveRight2(p, i, path):     # i zeigt auf rechten Teil von Auto
     pp = p.copy()
     if i > (len(p) - 3):
         return False
     if p[i + 2] == 0 and p[i + 1] == 0:
         path.append(p[i] + " 2 rechts")
-        return True
+        return True, path
     if p[i + 1] == 0 and p[i + 2] != 0:
-        if moveRight1(pp, i + 2):
+        if moveRight1(pp, i + 2, path):
             path.append(p[i] + " 2 rechts")
-            return True
+            return True, path
     if p[i + 1] != 0 and p[i + 2] != 0:
-        if moveRight2(pp, i + 2):
+        if moveRight2(pp, i + 2, path):
             path.append(p[i] + " 2 rechts")
-            return True
+            return True, path
     return False
 
 
-def moveRight1(p, i):   # i zeigt auf linken Teil von Auto
+def moveRight1(p, i, path):   # i zeigt auf linken Teil von Auto
     pp = p.copy()
     if i > (len(p) - 3):
         return False
     if p[i+2] == 0:
         path.append(p[i] + " 1 rechts")
-        return True
+        return True, path
     else:
-        if moveRight1(pp, i+2):
+        if moveRight1(pp, i+2, path):
             path.append(p[i] + " 1 rechts")
-            return True
+            return True, path
     return False
 
 
@@ -118,14 +153,16 @@ def carRightSide(p, i):
     return False
 
 
-path = []
 parking_place = []
 parking_place = readFile(parking_place)
-
 print(parking_place)
 
 for i in range(len(parking_place)):
-    path = []
     print("Freimachen: %d" % i)
-    print(makeSpace(parking_place, i))
-    print(path)
+    solution = makeSpace(parking_place, i)
+    #print(solution, "SOLUTION")
+    if (solution[0]):
+        print("SOLUTION", solution[1], "SOLUTION")
+        print()
+    else:
+        print("nicht moeglich!")
