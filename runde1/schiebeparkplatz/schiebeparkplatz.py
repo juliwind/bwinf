@@ -27,18 +27,14 @@ def makeSpace(p, i):
     path_left = []
     path_right = []
     if (carLeftSide(p, i)):
-        print("carLeft")
         if (moveRight1(p, i, path_right)):
-            print("Right1 = True")
             ret = True
             ret_right = True
             final_path = path_right
         if (moveLeft2(p, i, path_left)):
-            print("Left2 = True")
             ret = True
             ret_left = True
             final_path = path_left
-        print("right: ", path_right, "left: ", path_left)
         if (ret_right and ret_left):
             if (len(path_left) < len(path_right)):
                 final_path = path_left
@@ -47,18 +43,14 @@ def makeSpace(p, i):
         return ret, final_path
 ###
     if (carRightSide(p, i)):
-        print("carRight")
         if (moveLeft1(p, i, path_left)):
-            print("Left1 = True")
             ret = True
             ret_left = True
             final_path = path_left
         if (moveRight2(p, i, path_right)):
-            print("Right2 = True")
             ret = True
             ret_right = True
             final_path = path_right
-        print("right: ", path_right, "left: ", path_left)
         if (ret_right and ret_left):
             if (len(path_left) < len(path_right)):
                 final_path = path_left
@@ -160,9 +152,7 @@ print(parking_place)
 for i in range(len(parking_place)):
     print("Freimachen: %d" % i)
     solution = makeSpace(parking_place, i)
-    #print(solution, "SOLUTION")
     if (solution[0]):
-        print("SOLUTION", solution[1], "SOLUTION")
-        print()
+        print(solution[1])
     else:
         print("nicht moeglich!")
