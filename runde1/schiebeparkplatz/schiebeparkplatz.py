@@ -11,6 +11,7 @@ def readFile(p):
         p[int(info[i + 1])] = info[i]
         p[int(info[i + 1]) + 1] = info[i]
         i += 2
+    print("P: ", p, "info[0]: ", info[0], "info: ", info)
     return (p, info[0])
 
 

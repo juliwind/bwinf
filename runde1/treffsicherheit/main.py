@@ -16,7 +16,6 @@ def readFile():
 
 
 planner = readFile()
-print(planner)
 
 
 def isBestDate(t, p):
@@ -37,4 +36,5 @@ for t in range(len(planner)):
         final_adjustments = adjustments
         bestDate = t
 
-print("bestDate", bestDate + 1, "number of adjustments", final_adjustments)
+print("allseits beliebtester Termin:", bestDate + 1,
+      "\nAnzahl der Veraenderungen:", final_adjustments)
