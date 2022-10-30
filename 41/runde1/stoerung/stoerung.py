@@ -1,60 +1,88 @@
 quote_path = "stoerung0.txt"
 
-with open('Alice_im_Wunderland.txt') as f:
+with open('Alice_im_Wunderland.txt', encoding="utf8") as f:
     text = []
+    written_text = ""
     for line in f:
         for word in line.split():
+            word = word.lower()
+            chars = list(word)
+            new_chars = []
+            for i in chars:
+                if (ord(i) > 96 and ord(i) < 123) or i == "ü" or i == "ä" or i == "ö" or i == "ß":
+                    new_chars.append(i)
+            word = ""
+            for i in new_chars:
+                word += i
             text.append(word)
+    written_text = written_text.lower()
 
-with open(quote_path) as f:
+with open(quote_path, encoding="utf8") as f:
     quote = []
     for line in f:
         for word in line.split():
             quote.append(word)
 
 
-def solveQuote(start_idx):
+def solveQuote():
+    knownWords = getKnownWords()
     possible_quotes = []
-    remaining_quote = quote
-    start_word = quote[start_idx]
+    j = 0
 
-    first_matches = []
-    idx = 0
-    for word in text:
-        if start_word == word:
-            first_matches.append(idx)
-            cur_quote = ""
-            for j in range(len(quote)):
-                cur_quote += text[j + idx - start_idx] + " "
-            possible_quotes.append(cur_quote)
-
-        idx += 1
-
-    remaining_quote = remaining_quote[start_idx + 1:len(remaining_quote)]
-    idx = 0
-    while (("_" in remaining_quote) == True) and (idx < 50):
-        idx_2 = 0
-        for i in remaining_quote:
-            print(i, i != "_")
-            if i != "_":
-                searched_word = remaining_quote[idx]
-                new_possibles = []
-                for i in range(len(possible_quotes)):
-                    temp_quote = possible_quotes[i]
-                    sliced_quote = temp_quote.split()
-                    if (sliced_quote[idx] == searched_word):
-                        new_possibles.append(sliced_quote)
-            idx_2 += 1
-        idx += 1
-        possible_quotes = new_possibles
-    # for x in range(len(possible_quotes)):
-        # print(possible_quotes[x])
+    for i in text:
+        if i == knownWords[0][0]:
+            for k in knownWords[1:]:
+                isRight = True
+                if (text[j + k[1] - knownWords[0][1]] != k[0]):
+                    isRight = False
+            if(isRight == True):
+                temp_quote = buildQuote(j)
+                possible_quotes.append(temp_quote)
+            isRight = False
+        j += 1
+    return possible_quotes
 
 
-idx = 0
+def getKnownWords():
+    temp = []
+    j = 0
+    for i in quote:
+        if i != "_":
+            temp.append([i, j])
+        j += 1
+    return temp
+
+
+def buildQuote(text_idx):
+    temp_quote = []
+    j = 0
+    for i in quote:
+        if i != "_":
+            break
+        j += 1
+    start_idx = text_idx - j
+    for k in range(len(quote)):
+        temp_quote.append(text[start_idx+k])
+    return temp_quote
+
+
+all_quotes = solveQuote()
+
+broke_quote_word = ""
 for i in quote:
+    broke_quote_word += i
+    broke_quote_word += " "
+print("Stoerung: ", broke_quote_word)
 
-    if i != "_":
-        solveQuote(idx)
-        break
-    idx += 1
+unique_quotes = []
+for sublist in all_quotes:
+    if sublist not in unique_quotes:
+        unique_quotes.append(sublist)
+all_quotes = unique_quotes
+
+for i in all_quotes:
+    quote_word = ""
+    for j in i:
+        quote_word += j
+        quote_word += " "
+    print("Zitat: ", quote_word)
