@@ -6,8 +6,15 @@ def main():
         for i in range(dim[0]):
             l = f.readline()
             for j in range(dim[1]):
-                c = l[i]
-                lower[i][j] = c
+                c = l[j]
+                lower[i][j] = (c)
+        f.readline()
+        for i in range(dim[0]):
+            l = f.readline()
+            for j in range(dim[1]):
+                c = l[j]
+                upper[i][j] = (c)
+        print(upper, "              sdijfisjdnfisdujnf              ", lower)
                 
 
 
