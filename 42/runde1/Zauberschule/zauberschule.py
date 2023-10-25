@@ -19,42 +19,98 @@ def solve(field, start, end):
     return 0
 
 
-
+## KONTROLLIEREN
 def createGraph(field, d_n, d_m):
     for i in range(len(field)):
         for j in range(len(field[i])):
              for k in range(len(field[i][j])):
-                #FEHLER!!!! WÄNDNE NOCH NICHT MITEINBEZOGEN
                 if i == 0:
-                     b = -1
-                     t = 3
+                    b = -1
+                    if field[1][j][k] == ".": 
+                        t = 3
+                    elif field[1][j][k] == "#":
+                        t = -1
+                    else:
+                        print("Falsche Eingabe!")
+                        exit()
                 elif i == 1:
-                    b = 3
                     t = -1
-                else: 
-                    print("Falsche Eingabe! Keine 2 Stockwerke!")
+                    if field[0][j][k] == ".":
+                        b = 3
+                    elif field[0][j][k] == "#":
+                        b = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
+                else:
+                    print("Falsche Eingabe!")
                     exit()
-
                 if j >= (d_n - 1):
-                    n = 1
                     s = -1
+                    if field[i][j-1][k] == ".":
+                        n = 1
+                    elif field[i][j-1][k] == "#":
+                        n = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
                 elif j <= 0:
                     n = -1
-                    s = 1
+                    if field[i][j+1][k] == ".":
+                        s = 1
+                    elif field[i][j+1][k] == "#":
+                        s = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
                 else:
-                    n = 1
-                    s = 1
-
+                    if field[i][j-1][k] == ".":
+                        n = 1
+                    elif field[i][j-1][k] == "#":
+                        n = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
+                    if field[i][j+1][k] == ".":
+                        s = 1
+                    elif field[i][j+1][k] == "#":
+                        s = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
                 if k >= (d_m - 1):
                     e = -1
-                    w = 1
+                    if field[i][j][k-1] == ".":
+                        w = 1
+                    elif field[i][j][k-1] == "#":
+                        w = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
                 elif k <= 0:
-                    e = 1
                     w = -1
-                else:
-                    e = 1
-                    w = 1
-                
+                    if field[i][j][k+1] == ".":
+                        e = 1
+                    elif field[i][j][k+1] == "#":
+                        e = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
+                else: 
+                    if field[i][j][k-1] == ".":
+                        w = 1
+                    elif field[i][j][k-1] == "#":
+                        w = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
+                    if field[i][j][k+1] == ".":
+                        e = 1
+                    elif field[i][j][k+1] == "#":
+                        e = -1
+                    else: 
+                        print("Falsche Eingabe!")
+                        exit()
                 new_Node = Node(t, b, n, e, s, w)
 
 
