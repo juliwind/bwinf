@@ -7,115 +7,112 @@ class Node:
         self.s = s
         self.w = w
     
+    def show(self):
+        print("Top: ", self.top, " Bottom: ", self.bottom, " N: ", self.n, " E: ", self.e, " S: ", self.s, " W: ", self.w)
 
 
 def main():
     field, start, end, n, m = readFile()
-    #print(field, start, end)
     graph = createGraph(field, n, m)
-    solution = solve(field, start, end) 
+    solution = solve(graph, start, end) 
 
-def solve(field, start, end):
-    return 0
+def solve(graph, start, end):
+    first_node = graph[start[2]][start[0]][start[1]]
+    first_node.show()
 
-
-## KONTROLLIEREN
 def createGraph(field, d_n, d_m):
+    graph = [[],[]]
+    for i in range(len(field[0]) - 1):
+        graph[0].append([])
+        graph[1].append([])
+        for j in range(len(field[0][i]) - 1):
+            graph[0][i].append(0)
+            graph[1][i].append(0)
+
     for i in range(len(field)):
-        for j in range(len(field[i])):
-             for k in range(len(field[i][j])):
+        for j in range(len(field[i]) - 1):
+             for k in range(len(field[i][j]) - 1):
                 if i == 0:
                     b = -1
-                    if field[1][j][k] == ".": 
+                    if field[1][j][k] == "." or field[1][j][k] == "A" or field[1][j][k] == "B": 
                         t = 3
                     elif field[1][j][k] == "#":
                         t = -1
                     else:
-                        print("Falsche Eingabe!")
                         exit()
                 elif i == 1:
                     t = -1
-                    if field[0][j][k] == ".":
+                    if field[0][j][k] == "." or field[0][j][k] == "A" or field[0][j][k] == "B":
                         b = 3
                     elif field[0][j][k] == "#":
                         b = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
                 else:
-                    print("Falsche Eingabe!")
                     exit()
                 if j >= (d_n - 1):
                     s = -1
-                    if field[i][j-1][k] == ".":
+                    if field[i][j-1][k] == "." or field[i][j-1][k] == "A" or field[i][j-1][k] == "B":
                         n = 1
                     elif field[i][j-1][k] == "#":
                         n = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
                 elif j <= 0:
                     n = -1
-                    if field[i][j+1][k] == ".":
+                    if field[i][j+1][k] == "." or field[i][j+1][k] == "A" or field[i][j+1][k] == "B":
                         s = 1
                     elif field[i][j+1][k] == "#":
                         s = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
                 else:
-                    if field[i][j-1][k] == ".":
+                    if field[i][j-1][k] == "." or field[i][j-1][k] == "A" or field[i][j-1][k] == "B":
                         n = 1
                     elif field[i][j-1][k] == "#":
                         n = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
-                    if field[i][j+1][k] == ".":
+                    if field[i][j+1][k] == "." or field[i][j+1][k] == "A" or field[i][j+1][k] == "B":
                         s = 1
                     elif field[i][j+1][k] == "#":
                         s = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
                 if k >= (d_m - 1):
                     e = -1
-                    if field[i][j][k-1] == ".":
+                    if field[i][j][k-1] == "." or field[i][j][k-1] == "A" or field[i][j][k-1] == "B":
                         w = 1
                     elif field[i][j][k-1] == "#":
                         w = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
                 elif k <= 0:
                     w = -1
-                    if field[i][j][k+1] == ".":
+                    if field[i][j][k+1] == "." or field[i][j][k+1] == "A" or field[i][j][k+1] == "B":
                         e = 1
                     elif field[i][j][k+1] == "#":
                         e = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
                 else: 
-                    if field[i][j][k-1] == ".":
+                    if field[i][j][k-1] == "." or field[i][j][k-1] == "A" or field[i][j][k-1] == "B":
                         w = 1
                     elif field[i][j][k-1] == "#":
                         w = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
-                    if field[i][j][k+1] == ".":
+                    if field[i][j][k+1] == "." or field[i][j][k+1] == "A" or field[i][j][k+1] == "B":
                         e = 1
                     elif field[i][j][k+1] == "#":
                         e = -1
                     else: 
-                        print("Falsche Eingabe!")
                         exit()
                 new_Node = Node(t, b, n, e, s, w)
+                graph[i][j][k] = new_Node
 
-
-        
-
+    return graph
+                     
 
 
 def readFile() :
@@ -137,31 +134,18 @@ def readFile() :
     dim_n = int(first_line[0])
     dim_m = int(first_line[1])
 
-    #print ("Dim n = %d" % dim_n)
-    #print ("Dim m = %d" % dim_m)
-
     # Read Stockwerk 1:
     for i in range(dim_n):
         stockwerk1.append(lines[i+1])
 
     # Check newline between Stockwerk 1 and 2;
     if lines[dim_n+1] != "\n":
-        print ("FORMAT ERROR in INPUT FILE!")
         exit()
 
     # Read Stockwerk 2:
     for i in range(dim_n):
         stockwerk2.append(lines[i+dim_n+2])
 
-    # Print Stockwerk1 and 2:
-    #print("Stockwerk 1:")
-    #for l in stockwerk1:
-    #    print(l)
-    #print("Stockwerk 2:")
-    #for l in stockwerk2:
-    #    print(l)
-
-    # Find A (Start) and B (End)
     for i in range (dim_n):
         for j in range (dim_m):
             if stockwerk1[i][j] == 'A':
@@ -181,10 +165,7 @@ def readFile() :
                 end[1] = j
                 end[2] = 2
 
-    #print ("Start(A): ", start)
-    #print ("End(B):   ", end)
     field = [stockwerk1, stockwerk2]
-    print(field[0][9][5])
     return(field, start, end, dim_n, dim_m)
 
 
