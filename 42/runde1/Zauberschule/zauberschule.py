@@ -17,7 +17,8 @@ def main():
     solution = solve(graph, start, end) 
 
 def solve(graph, start, end):
-    first_node = graph[start[2]][start[0]][start[1]]
+    print(start)
+    first_node = graph[0][0][0]
     first_node.show()
 
 def createGraph(field, d_n, d_m):
@@ -50,7 +51,7 @@ def createGraph(field, d_n, d_m):
                         exit()
                 else:
                     exit()
-                if j >= (d_n - 1):
+                if j == (d_n - 1):
                     s = -1
                     if field[i][j-1][k] == "." or field[i][j-1][k] == "A" or field[i][j-1][k] == "B":
                         n = 1
@@ -58,7 +59,7 @@ def createGraph(field, d_n, d_m):
                         n = -1
                     else: 
                         exit()
-                elif j <= 0:
+                elif j == 0:
                     n = -1
                     if field[i][j+1][k] == "." or field[i][j+1][k] == "A" or field[i][j+1][k] == "B":
                         s = 1
@@ -79,7 +80,7 @@ def createGraph(field, d_n, d_m):
                         s = -1
                     else: 
                         exit()
-                if k >= (d_m - 1):
+                if k == (d_m - 1):
                     e = -1
                     if field[i][j][k-1] == "." or field[i][j][k-1] == "A" or field[i][j][k-1] == "B":
                         w = 1
@@ -87,7 +88,7 @@ def createGraph(field, d_n, d_m):
                         w = -1
                     else: 
                         exit()
-                elif k <= 0:
+                elif k == 0:
                     w = -1
                     if field[i][j][k+1] == "." or field[i][j][k+1] == "A" or field[i][j][k+1] == "B":
                         e = 1
